@@ -11,19 +11,25 @@ displayName="${mod_name}"
 credits="Thanks to thedarkcolour and all the contributors for making Kotlin for Forge"
 authors="${mod_authors}"
 description='''${mod_description}'''
-[[dependencies.${mod_id}]]
+[[dependencies."${mod_id}"]]
     modId="neoforge"
     type="required"
     versionRange="${neo_version_range}"
     ordering="NONE"
     side="BOTH"
-[[dependencies.${mod_id}]]
+[[dependencies."${mod_id}"]]
     modId="minecraft"
     type="required"
     versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
 
+[[dependencies."${mod_id}"]]
+    modId = "curios"
+    type = "required"
+    versionRange = "[9.5.1+1.21.1,)"
+    ordering = "NONE"
+    side = "BOTH"
 # Features are specific properties of the game environment, that you may want to declare you require. This example declares
 # that your mod requires GL version 3.2 or higher. Other features will be added. They are side aware so declaring this won't
 # stop your mod loading on the server for example.
