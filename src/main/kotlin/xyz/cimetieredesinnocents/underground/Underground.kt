@@ -17,8 +17,8 @@ object Underground {
         LOADING_CONTEXT.activeContainer.registerConfig(ModConfig.Type.COMMON, PlayerValueConfig.SPEC, "underground/player_value.toml")
         DataAttachmentLoader.REGISTRY.register(MOD_BUS)
         DataComponentLoader.REGISTRY.register(MOD_BUS)
-        BlockLoader.REGISTRY.register(MOD_BUS)
-        ItemLoader.REGISTRY.register(MOD_BUS)
-        BlockEntityLoader.REGISTRY.register(MOD_BUS)
+        BlockLoader.bootstrap(MOD_BUS)
+        ItemLoader.bootstrap(MOD_BUS)
+        BlockEntityLoader.bootstrap(MOD_BUS)
     }
 }
