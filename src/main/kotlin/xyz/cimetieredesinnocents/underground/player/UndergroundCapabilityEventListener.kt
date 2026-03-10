@@ -10,6 +10,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent
 import net.neoforged.neoforge.event.level.BlockEvent
 import net.neoforged.neoforge.event.tick.PlayerTickEvent
 import top.theillusivec4.curios.api.event.CurioChangeEvent
+import xyz.cimetieredesinnocents.underground.loaders.GameRuleLoader
 import xyz.cimetieredesinnocents.underground.loaders.PlayerCapabilityLoader
 
 @EventBusSubscriber
@@ -17,6 +18,7 @@ object UndergroundCapabilityEventListener {
     @SubscribeEvent
     fun onTick(event: PlayerTickEvent.Pre) {
         if (event.entity.level().isClientSide) return
+
         val cap = event.entity.getCapability(PlayerCapabilityLoader.UNDERGROUND) ?: return
         cap.onTick()
     }
@@ -24,6 +26,9 @@ object UndergroundCapabilityEventListener {
     @SubscribeEvent
     fun onPick(event: ItemEntityPickupEvent.Pre) {
         if (event.player.level().isClientSide) return
+        val gameRule = event.player.level().gameRules.getRule(GameRuleLoader.UNDERGROUND_MODE).get()
+        if (!gameRule) return
+
         val cap = event.player.getCapability(PlayerCapabilityLoader.UNDERGROUND) ?: return
         cap.onPickItem(event.itemEntity.item.count)
     }
@@ -31,6 +36,9 @@ object UndergroundCapabilityEventListener {
     @SubscribeEvent
     fun onAttack(event: AttackEntityEvent) {
         if (event.entity.level().isClientSide) return
+        val gameRule = event.entity.level().gameRules.getRule(GameRuleLoader.UNDERGROUND_MODE).get()
+        if (!gameRule) return
+
         val cap = event.entity.getCapability(PlayerCapabilityLoader.UNDERGROUND) ?: return
         cap.onAttack()
     }
@@ -40,6 +48,9 @@ object UndergroundCapabilityEventListener {
         if (event.entity == null) return
         if (event.entity !is Player) return
         if (event.entity!!.level().isClientSide) return
+        val gameRule = event.entity!!.level().gameRules.getRule(GameRuleLoader.UNDERGROUND_MODE).get()
+        if (!gameRule) return
+
         val cap = event.entity!!.getCapability(PlayerCapabilityLoader.UNDERGROUND) ?: return
         cap.onPutBlock()
     }
@@ -47,6 +58,9 @@ object UndergroundCapabilityEventListener {
     @SubscribeEvent
     fun onBreakBlock(event: BlockEvent.BreakEvent) {
         if (event.player.level().isClientSide) return
+        val gameRule = event.player.level().gameRules.getRule(GameRuleLoader.UNDERGROUND_MODE).get()
+        if (!gameRule) return
+
         val cap = event.player.getCapability(PlayerCapabilityLoader.UNDERGROUND) ?: return
         cap.onBreakBlock()
     }
@@ -56,6 +70,7 @@ object UndergroundCapabilityEventListener {
         val player = event.entity
         if (player !is Player) return
         if (player.level().isClientSide) return
+
         val cap = player.getCapability(PlayerCapabilityLoader.UNDERGROUND) ?: return
         cap.onCurioChange()
     }
@@ -65,6 +80,7 @@ object UndergroundCapabilityEventListener {
         val player = event.entity
         if (player !is Player) return
         if (player.level().isClientSide) return
+
         val cap = player.getCapability(PlayerCapabilityLoader.UNDERGROUND) ?: return
         cap.onArmorChange()
     }
@@ -72,6 +88,7 @@ object UndergroundCapabilityEventListener {
     @SubscribeEvent
     fun onRespawn(event: PlayerEvent.PlayerRespawnEvent) {
         val player = event.entity
+
         val cap = player.getCapability(PlayerCapabilityLoader.UNDERGROUND) ?: return
         if (cap is UndergroundCapability) {
             cap.player = player

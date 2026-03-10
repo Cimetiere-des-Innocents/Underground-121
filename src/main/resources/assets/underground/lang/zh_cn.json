@@ -1,5 +1,6 @@
 {
     "death.attack.underground.sunburnt": "%1$s被灭世太阳神的烈焰灼烧至爆炸",
     "death.attack.underground.sunburnt.player": "%1$s被灭世太阳神的烈焰灼烧至爆炸，其余波炸死了%2$s",
-    "block.underground.ground_explosion": "天罚余烬"
+    "block.underground.ground_explosion": "天罚余烬",
+    "gamerule.underground.undergroundMode": "地下生存模式"
 }

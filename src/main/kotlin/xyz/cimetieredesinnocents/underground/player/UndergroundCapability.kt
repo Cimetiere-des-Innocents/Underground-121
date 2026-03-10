@@ -183,7 +183,8 @@ class UndergroundCapability(override var player: Player) : IUndergroundCapabilit
 
     private fun tick() {
         if (player.level().isClientSide) {
-            Underground.LOGGER.warn("WTF")
+            Underground.LOGGER.warn("Ticking underground capability in client")
+            return
         }
 
         if (player.isCreative || player.isSpectator) {
@@ -195,6 +196,13 @@ class UndergroundCapability(override var player: Player) : IUndergroundCapabilit
         onHandChange()
 
         val level = player.level()
+        val gameRule = level.gameRules.getRule(GameRuleLoader.UNDERGROUND_MODE).get()
+        if (!gameRule) {
+            currentExposure = 0
+            currentThreat = 0
+            return
+        }
+
         val lightLevel = level.getBrightness(LightLayer.SKY, player.blockPosition())
 
         if (lightLevel <= 0) {
