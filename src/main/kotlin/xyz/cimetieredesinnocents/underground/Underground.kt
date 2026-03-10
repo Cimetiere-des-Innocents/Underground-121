@@ -6,8 +6,7 @@ import org.apache.logging.log4j.LogManager
 import thedarkcolour.kotlinforforge.neoforge.forge.LOADING_CONTEXT
 import thedarkcolour.kotlinforforge.neoforge.forge.MOD_BUS
 import xyz.cimetieredesinnocents.underground.config.PlayerValueConfig
-import xyz.cimetieredesinnocents.underground.loaders.DataAttachmentLoader
-import xyz.cimetieredesinnocents.underground.loaders.DataComponentLoader
+import xyz.cimetieredesinnocents.underground.loaders.*
 
 @Mod(Underground.ID)
 object Underground {
@@ -18,5 +17,8 @@ object Underground {
         LOADING_CONTEXT.activeContainer.registerConfig(ModConfig.Type.COMMON, PlayerValueConfig.SPEC, "underground/player_value.toml")
         DataAttachmentLoader.REGISTRY.register(MOD_BUS)
         DataComponentLoader.REGISTRY.register(MOD_BUS)
+        BlockLoader.REGISTRY.register(MOD_BUS)
+        ItemLoader.REGISTRY.register(MOD_BUS)
+        BlockEntityLoader.REGISTRY.register(MOD_BUS)
     }
 }

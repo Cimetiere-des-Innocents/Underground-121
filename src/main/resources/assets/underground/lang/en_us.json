@@ -1,3 +1,5 @@
 {
-  "death.attack.underground.sunburnt": "%1$s is burnt to explosion by the flame of sun"
+  "death.attack.underground.sunburnt": "%1$s is burnt to explosion by the flame of sun",
+  "death.attack.underground.sunburnt.player": "%1$s is burnt to explosion by the flame of sun, the explosion kills %2$s",
+  "block.underground.ground_explosion": "Ground Explosion"
 }

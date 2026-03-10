@@ -1,21 +1,21 @@
 package xyz.cimetieredesinnocents.underground.player
 
+import net.minecraft.core.BlockPos
+import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.damagesource.DamageSource
 import net.minecraft.world.effect.MobEffectInstance
 import net.minecraft.world.effect.MobEffects
 import net.minecraft.world.entity.player.Player
-import net.minecraft.world.level.Level
 import net.minecraft.world.level.LightLayer
+import net.minecraft.world.level.block.Blocks
 import net.neoforged.neoforge.network.PacketDistributor
 import top.theillusivec4.curios.api.CuriosApi
 import xyz.cimetieredesinnocents.underground.Underground
+import xyz.cimetieredesinnocents.underground.blockentity.GroundExplosionBlockEntity
 import xyz.cimetieredesinnocents.underground.config.PlayerValueConfig
 import xyz.cimetieredesinnocents.underground.item.datacomponents.UndergroundModifiers
-import xyz.cimetieredesinnocents.underground.loaders.DamageTypeLoader
-import xyz.cimetieredesinnocents.underground.loaders.DataAttachmentLoader
-import xyz.cimetieredesinnocents.underground.loaders.DataComponentLoader
-import xyz.cimetieredesinnocents.underground.loaders.NetworkLoader
+import xyz.cimetieredesinnocents.underground.loaders.*
 import kotlin.jvm.optionals.getOrNull
 import kotlin.math.max
 import kotlin.math.sqrt
@@ -126,6 +126,29 @@ class UndergroundCapability(override var player: Player) : IUndergroundCapabilit
         }
     }
 
+    private fun findNearestExplosionAnchor(level: ServerLevel, origin: BlockPos, radius: Int = 6): BlockPos? {
+        var bestPos: BlockPos? = null
+        var bestDistance = Double.MAX_VALUE
+
+        for (y in -radius..radius) {
+            for (x in -radius..radius) {
+                for (z in -radius..radius) {
+                    val candidate = origin.offset(x, y, z)
+                    val state = level.getBlockState(candidate)
+                    if (state.isAir || state.`is`(Blocks.BEDROCK)) continue
+
+                    val distance = candidate.distSqr(origin)
+                    if (distance < bestDistance) {
+                        bestDistance = distance
+                        bestPos = candidate.immutable()
+                    }
+                }
+            }
+        }
+
+        return bestPos
+    }
+
     private fun punish() {
         if (currentThreat < PlayerValueConfig.deathThreshold) {
             player.addEffect(MobEffectInstance(MobEffects.WEAKNESS, 210, 5))
@@ -145,15 +168,16 @@ class UndergroundCapability(override var player: Player) : IUndergroundCapabilit
         )
 
         if (currentThreat >= PlayerValueConfig.explosionThreshold) {
-            player.level().explode(
-                player,
-                DamageSource(DamageTypeLoader.SUNBURNT(player.level())),
-                null,
-                player.position(),
-                threat / 512f,
-                true,
-                Level.ExplosionInteraction.BLOCK
-            )
+            val level = player.level() as ServerLevel
+            val pos = findNearestExplosionAnchor(level, player.blockPosition()) ?: return
+            level.setBlock(pos, BlockLoader.GROUND_EXPLOSION.defaultBlockState(), 3)
+            val be = level.getBlockEntity(pos)
+            if (be !is GroundExplosionBlockEntity) return
+            be.damageSource = player
+            be.blocksToCreate = threat
+            be.isFirstTick = true
+            be.setChanged()
+            level.scheduleTick(pos, BlockLoader.GROUND_EXPLOSION, 1)
         }
     }
 
@@ -267,7 +291,7 @@ class UndergroundCapability(override var player: Player) : IUndergroundCapabilit
         for (item in hands) {
             val dataComponent = item.components.get(DataComponentLoader.UNDERGROUND_MODIFIERS) ?: continue
             for (modifier in dataComponent.modifiers) {
-                addModifier(modifier, IUndergroundCapability.ModifierGroup.ARMOR)
+                addModifier(modifier, IUndergroundCapability.ModifierGroup.HAND)
             }
         }
     }
