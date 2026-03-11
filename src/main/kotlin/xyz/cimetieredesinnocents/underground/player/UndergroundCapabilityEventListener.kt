@@ -10,7 +10,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent
 import net.neoforged.neoforge.event.level.BlockEvent
 import net.neoforged.neoforge.event.tick.PlayerTickEvent
 import xyz.cimetieredesinnocents.underground.loaders.PlayerCapabilityLoader
-import xyz.cimetieredesinnocents.underground.loaders.listeners.GameRuleLoader
+import xyz.cimetieredesinnocents.underground.loaders.GameRuleLoader
 
 @EventBusSubscriber
 object UndergroundCapabilityEventListener {

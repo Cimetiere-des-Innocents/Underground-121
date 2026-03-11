@@ -12,15 +12,11 @@ import net.minecraft.world.level.block.Blocks
 import net.neoforged.neoforge.network.PacketDistributor
 import xyz.cimetieredesinnocents.underground.Underground
 import xyz.cimetieredesinnocents.underground.blockentity.GroundExplosionBlockEntity
-import xyz.cimetieredesinnocents.underground.config.PlayerValueConfig
+import xyz.cimetieredesinnocents.underground.config.Config
 import xyz.cimetieredesinnocents.underground.integration.CuriosIntegration
 import xyz.cimetieredesinnocents.underground.item.datacomponents.UndergroundModifiers
-import xyz.cimetieredesinnocents.underground.loaders.BlockLoader
-import xyz.cimetieredesinnocents.underground.loaders.DataAttachmentLoader
-import xyz.cimetieredesinnocents.underground.loaders.DataComponentLoader
-import xyz.cimetieredesinnocents.underground.loaders.NetworkLoader
+import xyz.cimetieredesinnocents.underground.loaders.*
 import xyz.cimetieredesinnocents.underground.loaders.datagen.DamageTypeLoader
-import xyz.cimetieredesinnocents.underground.loaders.listeners.GameRuleLoader
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -34,11 +30,11 @@ class UndergroundCapability(override var player: Player) : IUndergroundCapabilit
             dirty = true
         }
 
-    private val maxExposureHandler = ModifiedValue(PlayerValueConfig.maxExposure)
+    private val maxExposureHandler = ModifiedValue(Config.maxExposure)
     override val maxExposure by maxExposureHandler
 
-    private val exposureRateBaseHandler = ModifiedValue(PlayerValueConfig.exposureRateBase)
-    private val exposureRateThreatHandler = ModifiedValue(PlayerValueConfig.exposureRateThreat)
+    private val exposureRateBaseHandler = ModifiedValue(Config.exposureRateBase)
+    private val exposureRateThreatHandler = ModifiedValue(Config.exposureRateThreat)
     override val exposureRate get() = exposureRateBaseHandler.value + (sqrt(threat.toDouble()) * exposureRateThreatHandler.value).toInt()
 
     override val threat get() = player.getData(DataAttachmentLoader.UNDERGROUND_THREAT) ?: 0
@@ -49,11 +45,11 @@ class UndergroundCapability(override var player: Player) : IUndergroundCapabilit
             dirty = true
         }
 
-    private val threatRateHandlerExpose = ModifiedValue(PlayerValueConfig.threatRate.expose)
-    private val threatRateHandlerAttack = ModifiedValue(PlayerValueConfig.threatRate.attack)
-    private val threatRateHandlerPutBlock = ModifiedValue(PlayerValueConfig.threatRate.putBlock)
-    private val threatRateHandlerBreakBlock = ModifiedValue(PlayerValueConfig.threatRate.breakBlock)
-    private val threatRateHandlerPickItem = ModifiedValue(PlayerValueConfig.threatRate.pickItem)
+    private val threatRateHandlerExpose = ModifiedValue(Config.threatRate.expose)
+    private val threatRateHandlerAttack = ModifiedValue(Config.threatRate.attack)
+    private val threatRateHandlerPutBlock = ModifiedValue(Config.threatRate.putBlock)
+    private val threatRateHandlerBreakBlock = ModifiedValue(Config.threatRate.breakBlock)
+    private val threatRateHandlerPickItem = ModifiedValue(Config.threatRate.pickItem)
     override val threatRate = object : IUndergroundCapability.IThreatRate {
         override val expose by threatRateHandlerExpose
         override val attack by threatRateHandlerAttack
@@ -69,7 +65,7 @@ class UndergroundCapability(override var player: Player) : IUndergroundCapabilit
             dirty = true
         }
 
-    private val shieldRateHandler = ModifiedValue(PlayerValueConfig.shieldRate)
+    private val shieldRateHandler = ModifiedValue(Config.shieldRate)
     override val shieldRate by shieldRateHandler
 
     private val modifiedValues = listOf(
@@ -154,7 +150,7 @@ class UndergroundCapability(override var player: Player) : IUndergroundCapabilit
     }
 
     private fun punish() {
-        if (currentThreat < PlayerValueConfig.deathThreshold) {
+        if (currentThreat < Config.deathThreshold) {
             player.addEffect(MobEffectInstance(MobEffects.WEAKNESS, 210, 5))
             player.addEffect(MobEffectInstance(MobEffects.BLINDNESS, 210))
             player.addEffect(MobEffectInstance(MobEffects.CONFUSION, 210))
@@ -171,7 +167,7 @@ class UndergroundCapability(override var player: Player) : IUndergroundCapabilit
             Float.MAX_VALUE
         )
 
-        if (currentThreat >= PlayerValueConfig.explosionThreshold) {
+        if (currentThreat >= Config.explosionThreshold) {
             val level = player.level() as ServerLevel
             val pos = findNearestExplosionAnchor(level, player.blockPosition()) ?: return
             level.setBlock(pos, BlockLoader.GROUND_EXPLOSION.defaultBlockState(), 3)
