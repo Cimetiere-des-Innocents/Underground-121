@@ -78,5 +78,4 @@ interface IUndergroundCapability : PlayerCapabilityBase {
     fun onBreakBlock()
     fun onCurioChange()
     fun onArmorChange()
-    fun onRespawn()
 }

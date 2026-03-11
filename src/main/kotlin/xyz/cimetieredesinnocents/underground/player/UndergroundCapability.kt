@@ -10,15 +10,17 @@ import net.minecraft.world.entity.player.Player
 import net.minecraft.world.level.LightLayer
 import net.minecraft.world.level.block.Blocks
 import net.neoforged.neoforge.network.PacketDistributor
-import top.theillusivec4.curios.api.CuriosApi
 import xyz.cimetieredesinnocents.underground.Underground
 import xyz.cimetieredesinnocents.underground.blockentity.GroundExplosionBlockEntity
 import xyz.cimetieredesinnocents.underground.config.PlayerValueConfig
+import xyz.cimetieredesinnocents.underground.integration.CuriosIntegration
 import xyz.cimetieredesinnocents.underground.item.datacomponents.UndergroundModifiers
-import xyz.cimetieredesinnocents.underground.loaders.*
+import xyz.cimetieredesinnocents.underground.loaders.BlockLoader
+import xyz.cimetieredesinnocents.underground.loaders.DataAttachmentLoader
+import xyz.cimetieredesinnocents.underground.loaders.DataComponentLoader
+import xyz.cimetieredesinnocents.underground.loaders.NetworkLoader
 import xyz.cimetieredesinnocents.underground.loaders.datagen.DamageTypeLoader
 import xyz.cimetieredesinnocents.underground.loaders.listeners.GameRuleLoader
-import kotlin.jvm.optionals.getOrNull
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -264,12 +266,11 @@ class UndergroundCapability(override var player: Player) : IUndergroundCapabilit
     }
 
     override fun onCurioChange() {
-        val curiosHandler = CuriosApi.getCuriosInventory(player).getOrNull()
         for (modifiedValue in modifiedValues) {
             modifiedValue.clearModifierGroup(IUndergroundCapability.ModifierGroup.CURIO)
         }
-        if (curiosHandler == null) return
-        val curios = curiosHandler.equippedCurios
+
+        val curios = CuriosIntegration.getCurios(player) ?: return
         for (slotId in 0..<curios.slots) {
             val item = curios.getStackInSlot(slotId)
             val dataComponent = item.components.get(DataComponentLoader.UNDERGROUND_MODIFIERS) ?: continue
@@ -306,8 +307,10 @@ class UndergroundCapability(override var player: Player) : IUndergroundCapabilit
         }
     }
 
-    override fun onRespawn() {
+    override fun afterRespawn() {
         currentThreat = 0
         currentExposure = 0
+        onCurioChange()
+        onArmorChange()
     }
 }

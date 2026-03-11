@@ -7,6 +7,7 @@ import thedarkcolour.kotlinforforge.neoforge.forge.FORGE_BUS
 import thedarkcolour.kotlinforforge.neoforge.forge.LOADING_CONTEXT
 import thedarkcolour.kotlinforforge.neoforge.forge.MOD_BUS
 import xyz.cimetieredesinnocents.underground.config.PlayerValueConfig
+import xyz.cimetieredesinnocents.underground.integration.CuriosIntegration
 import xyz.cimetieredesinnocents.underground.loaders.*
 
 @Mod(Underground.ID)
@@ -24,5 +25,6 @@ object Underground {
         BlockEntityLoader.bootstrap(MOD_BUS)
         PlayerCapabilityLoader.bootstrap(MOD_BUS, FORGE_BUS)
         NetworkLoader.bootstrap(MOD_BUS)
+        CuriosIntegration.bootstrap(FORGE_BUS)
     }
 }
