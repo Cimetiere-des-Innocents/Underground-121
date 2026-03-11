@@ -1,4 +1,4 @@
-package xyz.cimetieredesinnocents.underground.loaders
+package xyz.cimetieredesinnocents.underground.loaders.listeners
 
 import net.minecraft.world.level.GameRules
 import net.neoforged.bus.api.SubscribeEvent

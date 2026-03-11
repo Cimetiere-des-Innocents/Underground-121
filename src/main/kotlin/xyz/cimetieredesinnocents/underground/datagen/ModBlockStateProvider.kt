@@ -1,13 +1,12 @@
 package xyz.cimetieredesinnocents.underground.datagen
 
-import net.minecraft.data.PackOutput
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider
-import net.neoforged.neoforge.common.data.ExistingFileHelper
+import xyz.cimetieredesinnocents.cdilib.loaders.DataGenLoaderFactory
 import xyz.cimetieredesinnocents.underground.Underground
 import xyz.cimetieredesinnocents.underground.loaders.BlockLoader
 
-class ModBlockStateProvider(output: PackOutput, exFileHelper: ExistingFileHelper) :
-    BlockStateProvider(output, Underground.ID, exFileHelper) {
+class ModBlockStateProvider(context: DataGenLoaderFactory.Context) :
+    BlockStateProvider(context.output, Underground.ID, context.efh) {
     override fun registerStatesAndModels() {
         simpleBlock(BlockLoader.GROUND_EXPLOSION)
     }

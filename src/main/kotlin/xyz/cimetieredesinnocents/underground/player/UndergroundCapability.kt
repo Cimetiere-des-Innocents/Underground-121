@@ -16,6 +16,8 @@ import xyz.cimetieredesinnocents.underground.blockentity.GroundExplosionBlockEnt
 import xyz.cimetieredesinnocents.underground.config.PlayerValueConfig
 import xyz.cimetieredesinnocents.underground.item.datacomponents.UndergroundModifiers
 import xyz.cimetieredesinnocents.underground.loaders.*
+import xyz.cimetieredesinnocents.underground.loaders.datagen.DamageTypeLoader
+import xyz.cimetieredesinnocents.underground.loaders.listeners.GameRuleLoader
 import kotlin.jvm.optionals.getOrNull
 import kotlin.math.max
 import kotlin.math.sqrt

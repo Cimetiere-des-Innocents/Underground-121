@@ -6,11 +6,10 @@ import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent
-import net.neoforged.neoforge.event.entity.player.PlayerEvent
 import net.neoforged.neoforge.event.level.BlockEvent
 import net.neoforged.neoforge.event.tick.PlayerTickEvent
 import top.theillusivec4.curios.api.event.CurioChangeEvent
-import xyz.cimetieredesinnocents.underground.loaders.GameRuleLoader
+import xyz.cimetieredesinnocents.underground.loaders.listeners.GameRuleLoader
 import xyz.cimetieredesinnocents.underground.loaders.PlayerCapabilityLoader
 
 @EventBusSubscriber
@@ -83,15 +82,5 @@ object UndergroundCapabilityEventListener {
 
         val cap = player.getCapability(PlayerCapabilityLoader.UNDERGROUND) ?: return
         cap.onArmorChange()
-    }
-
-    @SubscribeEvent
-    fun onRespawn(event: PlayerEvent.PlayerRespawnEvent) {
-        val player = event.entity
-
-        val cap = player.getCapability(PlayerCapabilityLoader.UNDERGROUND) ?: return
-        if (cap is UndergroundCapability) {
-            cap.player = player
-        }
     }
 }

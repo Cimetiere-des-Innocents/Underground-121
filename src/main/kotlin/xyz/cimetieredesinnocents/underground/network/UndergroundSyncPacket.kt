@@ -1,9 +1,10 @@
 package xyz.cimetieredesinnocents.underground.network
 
+import net.minecraft.network.RegistryFriendlyByteBuf
 import net.neoforged.neoforge.network.handling.IPayloadContext
 import xyz.cimetieredesinnocents.underground.loaders.DataAttachmentLoader
 
-object UndergroundSyncPacket : BasePacket<UndergroundSyncPacket.Data>(
+object UndergroundSyncPacket : BasePacket<UndergroundSyncPacket.Data, RegistryFriendlyByteBuf>(
     "underground_sync",
     Direction.TO_CLIENT,
     Phase.PLAY

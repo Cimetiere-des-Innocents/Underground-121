@@ -9,7 +9,7 @@ import net.minecraft.client.DeltaTracker
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
 import xyz.cimetieredesinnocents.underground.loaders.PlayerCapabilityLoader
-import xyz.cimetieredesinnocents.underground.loaders.ShaderLoader
+import xyz.cimetieredesinnocents.underground.loaders.listeners.ShaderLoader
 
 
 object UndergroundHudBackground {

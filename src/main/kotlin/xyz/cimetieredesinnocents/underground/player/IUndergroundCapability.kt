@@ -1,9 +1,9 @@
 package xyz.cimetieredesinnocents.underground.player
 
-import net.minecraft.world.entity.player.Player
+import xyz.cimetieredesinnocents.cdilib.player.PlayerCapabilityBase
 import xyz.cimetieredesinnocents.underground.item.datacomponents.UndergroundModifiers
 
-interface IUndergroundCapability {
+interface IUndergroundCapability : PlayerCapabilityBase {
     interface IThreatRate {
         val expose: Int
         val attack: Int
@@ -31,8 +31,6 @@ interface IUndergroundCapability {
          */
         HAND
     }
-
-    val player: Player
 
     /**
      * 暴露值，当该值达到`maxExposure`时造成阳光暴露惩罚

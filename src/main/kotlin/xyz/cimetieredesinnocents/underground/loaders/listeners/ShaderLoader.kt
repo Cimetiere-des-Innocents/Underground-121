@@ -1,4 +1,4 @@
-package xyz.cimetieredesinnocents.underground.loaders
+package xyz.cimetieredesinnocents.underground.loaders.listeners
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat
 import net.minecraft.client.renderer.ShaderInstance
@@ -14,10 +14,12 @@ object ShaderLoader {
 
     @SubscribeEvent
     fun registerShaders(event: RegisterShadersEvent) {
-        event.registerShader(ShaderInstance(
-            event.resourceProvider,
-            RLUtil.of("underground_hud_background"),
-            DefaultVertexFormat.POSITION_TEX_COLOR)
+        event.registerShader(
+            ShaderInstance(
+                event.resourceProvider,
+                RLUtil.of("underground_hud_background"),
+                DefaultVertexFormat.POSITION_TEX_COLOR
+            )
         ) { UNDERGROUND_HUD_BACKGROUND = it }
     }
 }

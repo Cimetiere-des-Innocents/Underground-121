@@ -1,4 +1,4 @@
-package xyz.cimetieredesinnocents.underground.loaders
+package xyz.cimetieredesinnocents.underground.loaders.listeners
 
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.SubscribeEvent

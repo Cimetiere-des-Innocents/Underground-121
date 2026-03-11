@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 import thedarkcolour.kotlinforforge.neoforge.forge.vectorutil.v3d.toVec3
 import xyz.cimetieredesinnocents.underground.blockentity.GroundExplosionBlockEntity
-import xyz.cimetieredesinnocents.underground.loaders.DamageTypeLoader
+import xyz.cimetieredesinnocents.underground.loaders.datagen.DamageTypeLoader
 
 class GroundExplosionBlock : Block(
     Properties
